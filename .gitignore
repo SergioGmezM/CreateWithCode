@@ -3,13 +3,12 @@
 
 /*/[Ll]ibrary/
 /*/[Uu]serSettings/
-/*[Tt]emp/
-/*[Oo]bj/
+/*/[Tt]emp/
+/*/[Oo]bj/
 /*/[Bb]uild/
 /*/[Bb]uilds/
 /*/[Ll]ogs/
 /*/[Mm]emoryCaptures/
-/*/[Tt]emp/
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # [Aa]ssets/AssetStoreTools*
