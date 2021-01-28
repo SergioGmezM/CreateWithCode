@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPlayerX : MonoBehaviour
+public class SpinnerX : MonoBehaviour
 {
-    public GameObject plane;
-    private Vector3 offset;
+    public float spinSpeed = 500.0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        offset = transform.position;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = plane.transform.position + offset;
+        transform.Rotate(Vector3.forward, spinSpeed * Time.deltaTime);
     }
 }

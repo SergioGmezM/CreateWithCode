@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public float speed = 15.0f;
     public float turnSpeed = 35.0f;
 
-    private int isAccelerating;
     private float horizontalInput;
     private float forwardInput;
 
@@ -21,6 +20,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int isAccelerating;
         horizontalInput = Input.GetAxis("Horizontal");
         forwardInput = Input.GetAxis("Vertical");
 
