@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5.0f;
+    public float speed = 20.0f;
 
     private float horizontalInput;
 
@@ -19,6 +19,6 @@ public class PlayerController : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
 
-        transform.position = Vector3.right * horizontalInput * speed * Time.deltaTime;
+        transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
     }
 }
