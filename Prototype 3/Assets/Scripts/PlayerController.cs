@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public bool gameOver;
 
     private Rigidbody playerRB;
+    private Animator playerAnim;
     private bool isJumping = false;
 
     // Start is called before the first frame update
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         gameOver = false;
         playerRB = GetComponent<Rigidbody>();
+        playerAnim = GetComponent<Animator>();
         Physics.gravity *= gravityModifier;
     }
 
@@ -27,10 +29,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        if(!gameOver)
         {
-            playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isJumping = true;
+            if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+            {
+                playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                isJumping = true;
+                playerAnim.SetTrigger("Jump_trig");
+            }
         }
     }
 
@@ -40,6 +46,8 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = false;
         } else if (collision.gameObject.CompareTag("Obstacle")) {
+            playerAnim.SetInteger("DeathType_int", 1);
+            playerAnim.SetBool("Death_b", true);
             gameOver = true;
         }
     }
