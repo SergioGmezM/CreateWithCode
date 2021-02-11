@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class PlayerControllerX : MonoBehaviour
 {
-    public bool gameOver;
+    public bool gameOver = false;
 
-    public float floatForce;
+    public float skyBounds = 15.5f;
+    public float floatForce = 12.0f;
     private float gravityModifier = 1.5f;
     private Rigidbody playerRb;
 
@@ -16,6 +17,7 @@ public class PlayerControllerX : MonoBehaviour
     private AudioSource playerAudio;
     public AudioClip moneySound;
     public AudioClip explodeSound;
+    public AudioClip bounceSound;
 
 
     // Start is called before the first frame update
@@ -25,6 +27,7 @@ public class PlayerControllerX : MonoBehaviour
         playerAudio = GetComponent<AudioSource>();
 
         // Apply a small upward force at the start of the game
+        playerRb = GetComponent<Rigidbody>();
         playerRb.AddForce(Vector3.up * 5, ForceMode.Impulse);
 
     }
@@ -33,9 +36,12 @@ public class PlayerControllerX : MonoBehaviour
     void Update()
     {
         // While space is pressed and player is low enough, float up
-        if (Input.GetKey(KeyCode.Space) && !gameOver)
+        if (Input.GetKeyDown(KeyCode.Space) && !gameOver)
         {
-            playerRb.AddForce(Vector3.up * floatForce);
+            if (transform.position.y < skyBounds)
+            {
+                playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse);
+            }
         }
     }
 
@@ -60,6 +66,13 @@ public class PlayerControllerX : MonoBehaviour
 
         }
 
+        // if player collides with the ground, it bounces back up
+        else if (other.gameObject.CompareTag("Ground") && !gameOver)
+        {
+            playerRb.velocity = Vector3.zero;
+            playerRb.AddForce(Vector3.up * 8, ForceMode.Impulse);
+            playerAudio.PlayOneShot(bounceSound, 1.0f);
+        }
     }
 
 }
