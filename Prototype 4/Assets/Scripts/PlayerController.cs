@@ -5,10 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
+    public GameObject powerupIndicator;
 
     private Rigidbody playerRB;
     private GameObject focalPoint;
-    private float powerUpStrength = 15.0f;
+    private float powerUpStrength = 25.0f;
     private float maxSqrtVelocity = 10.0f;
     private float forwardInput = 0.0f;
     private float previousForwardInput;
@@ -28,9 +29,14 @@ public class PlayerController : MonoBehaviour
         previousForwardInput = forwardInput;
         forwardInput = Input.GetAxis("Vertical");
 
-        if (Mathf.Sign(previousForwardInput) != Mathf.Sign(forwardInput))
+        if (Mathf.Sign(previousForwardInput) != Mathf.Sign(forwardInput) && previousForwardInput != 0.0f)
         {
             changeDirection = true;
+        }
+
+        if(hasPowerup)
+        {
+            powerupIndicator.transform.position = transform.position + new Vector3(0, -0.6f, 0);
         }
     }
 
@@ -45,7 +51,7 @@ public class PlayerController : MonoBehaviour
         // If a change in direction has been made, forces the player to remove the inertia faster
         if (changeDirection)
         {
-            playerRB.AddForce(focalPoint.transform.forward * speed * forwardInput * 400.0f);
+            playerRB.AddForce(focalPoint.transform.forward * speed * forwardInput * 500.0f);
             changeDirection = false;
         }
     }
@@ -56,7 +62,16 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(other.gameObject);
             hasPowerup = true;
+            powerupIndicator.gameObject.SetActive(true);
+            StartCoroutine("PowerupCountdownRoutine");
         }
+    }
+
+    IEnumerator PowerupCountdownRoutine()
+    {
+        yield return new WaitForSeconds(7);
+        hasPowerup = false;
+        powerupIndicator.gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
