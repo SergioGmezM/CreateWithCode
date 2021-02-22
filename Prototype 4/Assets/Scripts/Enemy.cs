@@ -8,7 +8,6 @@ public class Enemy : MonoBehaviour
 
     private Transform playerTransform;
     private Rigidbody enemyRB;
-    private Vector3 direction;
     private float maxSqrtVelocity = 9.0f;
     private float yBounds = 50.0f;
 
