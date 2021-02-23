@@ -91,17 +91,36 @@ public class PlayerController : MonoBehaviour
                 playerRB.AddForce(Vector3.right * horizontalMove * speed);
         }
     }
-  
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // If player hits a heart, add health and destroy heart
+        if (other.gameObject.CompareTag("Heart"))
+        {
+            // adds health
+            Destroy(other.gameObject);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         // When player lands on platform, it isn't jumping anymore
         if (collision.gameObject.CompareTag("Platform"))
         {
             isJumping = false;
+            // Takes the platform's transform as the objects parent
+            transform.parent = collision.gameObject.transform;
         }
 
         // If player hits an enemy, substract health and destroy enemy
+    }
 
-        // If player hits a heart, add health and destroy heart
+    // When the player jumps off a platform, it's no longer its parent
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            transform.parent = null;
+        }
     }
 }
