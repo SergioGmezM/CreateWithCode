@@ -1,0 +1,13 @@
+The character has movility and the platforms are spawning and going away correctly.
+
+Enemies are being created but they could chase the player more accurately (maybe introducing difficulty levels?). Also the player should be able to interact with them by right-clicking them to make the disappear.
+
+Hearts are being instantiated and are destroyed with the player when they collide with each other. The interaction is yet to be made. Also they should interact with the player too when Walnut brings them with his tongue by left-clicking. The interaction should affect Hope's health bar.
+
+Bees are being created but no interaction has been made yet. These should affect the total score and should only be interacted by left-clicking.
+
+The initial platform should go away at some point, maybe when Hope leaves it, it should start moving to the left. And the other platforms could go a little bit faster.
+
+There should be an UI that shows the game title and a START button (it could have different difficulty modes in the future). Create an UI that shows the health points and the score points being updated with the interactions of the player with the different objects. When the game is over, the UI should show the final score and a RESTART button. All of this should be managed by a GameManager script.
+
+The background should be moving to the left and repositioning so it gives the illusion of continuity.
