@@ -11,6 +11,7 @@ public class SpawnManager : MonoBehaviour
     public float zPos = 0.0f;
     public float timeInterval;
 
+    private GameManager gameManager;
     private float xPos = 22.0f;
     private IEnumerator coroutine;
     private bool nextSpawn = true;
@@ -18,16 +19,19 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (nextSpawn)
+        if (gameManager.isGameActive && nextSpawn)
         {
             nextSpawn = false;
             startSpawnCoroutine();
+        } else if (!gameManager.isGameActive)
+        {
+            stopSpawnCoroutine();
         }
     }
 
@@ -42,6 +46,12 @@ public class SpawnManager : MonoBehaviour
     {
         coroutine = spawnCoroutine();
         StartCoroutine(coroutine);
+    }
+
+    private void stopSpawnCoroutine()
+    {
+        coroutine = spawnCoroutine();
+        StopCoroutine(coroutine);
     }
 
     private Vector3 GetRandomLocation(float topBound, float bottomBound)

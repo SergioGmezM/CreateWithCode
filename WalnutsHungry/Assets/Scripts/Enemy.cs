@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 3.0f;
+    private float DISTANCETHRESHOLD = 1.5f;
 
+    public float speed = 3.0f;
+    public int damage = 10;
+
+    private GameManager gameManager;
     private Transform playerTransform;
     private Rigidbody enemyRB;
     private float maxSqrtVelocity = 4.0f;
     private float yBounds = 12.0f;
     private float xBounds = 23.0f;
+    private bool chasePlayer = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         enemyRB = GetComponent<Rigidbody>();
         playerTransform = GameObject.Find("Player").GetComponent<Transform>();
     }
@@ -27,14 +33,52 @@ public class Enemy : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (chasePlayer && Vector3.Distance(playerTransform.position, enemyRB.position) < DISTANCETHRESHOLD)
+        {
+            DamagePlayer();
+        }
     }
 
     private void FixedUpdate()
     {
-        if (enemyRB.velocity.sqrMagnitude < maxSqrtVelocity)
+        if (gameManager.isGameActive)
         {
-            Vector3 lookDirection = (playerTransform.position - enemyRB.position).normalized;
-            enemyRB.AddForce(lookDirection * speed);
+            if (enemyRB.velocity.sqrMagnitude <= maxSqrtVelocity)
+            {
+                Vector3 lookDirection = (playerTransform.position - enemyRB.position).normalized;
+
+                // Gets away from the player
+                if (!chasePlayer)
+                {
+                    lookDirection *= -1;
+                }
+
+                enemyRB.AddForce(lookDirection * speed);
+            }
+            else
+            {
+                enemyRB.velocity /= 2;
+            }
+        } else
+        {
+            enemyRB.velocity = Vector3.zero;
         }
+    }
+
+    public void OnMouseOver()
+    {
+        // Detects right-click
+        if (Input.GetMouseButtonDown(1))
+        {
+            // Add some explosion effect?
+            Destroy(gameObject);
+        } 
+    }
+
+    public void DamagePlayer()
+    {
+        gameManager.UpdateHealth(-damage);
+        chasePlayer = false;
     }
 }

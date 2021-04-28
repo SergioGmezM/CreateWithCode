@@ -10,15 +10,14 @@ public class PlayerController : MonoBehaviour
 
     // Public variables
 
-    public bool gameOver = false;
-
     public float gravityModifier = 1.5f;
     public float jumpForce = 400.0f;
-    public float speed = 500.0f; 
+    public float speed = 500.0f;
 
 
     // Private variables
 
+    private GameManager gameManager;
     private Rigidbody playerRB;
 
     private bool isJumping = false;
@@ -30,6 +29,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         Physics.gravity *= gravityModifier;
         playerRB = GetComponent<Rigidbody>();
     }
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameOver)
+        if (gameManager.isGameActive)
         {
             horizontalMove = Input.GetAxis("Horizontal");
 
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     // FixedUpdate is called once per physics calculation
     private void FixedUpdate()
     {
-        if (!gameOver)
+        if (gameManager.isGameActive)
         {
             MovePlayer();
         }
@@ -99,6 +99,10 @@ public class PlayerController : MonoBehaviour
         {
             // adds health
             Destroy(other.gameObject);
+        } else if (other.gameObject.CompareTag("Sensor"))
+        {
+            gameManager.GameOver();
+            Destroy(gameObject);
         }
     }
 
