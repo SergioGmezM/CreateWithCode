@@ -11,3 +11,5 @@ The initial platform should go away at some point, maybe when Hope leaves it, it
 There should be an UI that shows the game title and a START button (it could have different difficulty modes in the future). Create an UI that shows the health points and the score points being updated with the interactions of the player with the different objects. When the game is over, the UI should show the final score and a RESTART button. All of this should be managed by a GameManager script. - DONE
 
 The background should be moving to the left and repositioning so it gives the illusion of continuity.
+
+The player has its skin but it has to be correctly animated. Same goes for enemies and collectibles.
