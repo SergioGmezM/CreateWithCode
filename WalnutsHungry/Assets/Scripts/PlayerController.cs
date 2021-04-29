@@ -94,15 +94,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // If player hits a heart, add health and destroy heart
-        if (other.gameObject.CompareTag("Heart"))
-        {
-            // adds health
-            Destroy(other.gameObject);
-        } else if (other.gameObject.CompareTag("Sensor"))
+        // If player falls off the platforms
+        if (other.gameObject.CompareTag("Sensor"))
         {
             gameManager.GameOver();
-            Destroy(gameObject);
         }
     }
 

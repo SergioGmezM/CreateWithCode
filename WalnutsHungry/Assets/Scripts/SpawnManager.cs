@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
     public float bottomBound;
     public float zPos = 0.0f;
     public float timeInterval;
+    public int numInstances = 1;
 
     private GameManager gameManager;
     private float xPos = 22.0f;
@@ -38,7 +39,7 @@ public class SpawnManager : MonoBehaviour
     IEnumerator spawnCoroutine()
     {
         yield return new WaitForSeconds(timeInterval);
-        SpawnObject();
+        SpawnObject(numInstances);
         nextSpawn = true;
     }
 
@@ -60,9 +61,12 @@ public class SpawnManager : MonoBehaviour
         return new Vector3(xPos, yPos, zPos);
     }
 
-    private void SpawnObject()
+    private void SpawnObject(int numInstances)
     {
-        Vector3 spawnPos = GetRandomLocation(topBound, bottomBound);
-        Instantiate(objectToSpawn, spawnPos, objectToSpawn.transform.rotation);
+        for (int i = 0; i < numInstances; i++)
+        {
+            Vector3 spawnPos = GetRandomLocation(topBound, bottomBound);
+            Instantiate(objectToSpawn, spawnPos, objectToSpawn.transform.rotation);
+        }
     }
 }

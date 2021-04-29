@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveLeft : MonoBehaviour
+public class FoodCollectible : MonoBehaviour
 {
-    public float speed = 8.0f;
-
     private GameManager gameManager;
-    private float xBounds = -22.0f;
+
+    public int scorePoints = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -18,14 +17,18 @@ public class MoveLeft : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.isGameActive)
-        {
-            transform.Translate(Vector3.left * speed * Time.deltaTime);
+        
+    }
 
-            if (transform.position.x < xBounds)
-            {
-                Destroy(gameObject);
-            }
+    public void OnMouseOver()
+    {
+        // Detects left-click
+        if (Input.GetMouseButtonDown(0))
+        {
+            gameManager.UpdateScore(scorePoints);
+
+            // Add some explosion effect?
+            Destroy(gameObject);
         }
     }
 }
