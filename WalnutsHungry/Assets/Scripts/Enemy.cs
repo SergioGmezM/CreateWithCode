@@ -6,8 +6,9 @@ public class Enemy : MonoBehaviour
 {
     private float DISTANCETHRESHOLD = 1.5f;
 
-    public float speed = 3.0f;
+    public float speed = 8.0f;
     public int damage = 10;
+    public float rotationSpeed = 5.0f;
 
     private GameManager gameManager;
     private Transform playerTransform;
@@ -22,7 +23,7 @@ public class Enemy : MonoBehaviour
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         enemyRB = GetComponent<Rigidbody>();
-        playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -55,6 +56,11 @@ public class Enemy : MonoBehaviour
                 }
 
                 enemyRB.AddForce(lookDirection * speed);
+
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+
+                //Rotate smoothly to this target:
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
             }
             else
             {
