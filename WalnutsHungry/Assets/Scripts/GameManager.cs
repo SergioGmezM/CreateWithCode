@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
         {
             health = 0;
             GameOver();
+        } else if (health > 100)
+        {
+            health = 100;
         }
 
         healthText.text = "HEALTH: " + health;

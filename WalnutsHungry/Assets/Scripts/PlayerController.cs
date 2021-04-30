@@ -13,12 +13,14 @@ public class PlayerController : MonoBehaviour
     public float gravityModifier = 1.5f;
     public float jumpForce = 400.0f;
     public float speed = 500.0f;
+    public float rotationSpeed = 5.0f;
 
 
     // Private variables
 
     private GameManager gameManager;
     private Rigidbody playerRB;
+    private Animator playerAnim;
 
     private bool isJumping = false;
 
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        playerAnim = GetComponentInChildren<Animator>();
         Physics.gravity *= gravityModifier;
         playerRB = GetComponent<Rigidbody>();
     }
@@ -41,8 +44,19 @@ public class PlayerController : MonoBehaviour
         {
             horizontalMove = Input.GetAxis("Horizontal");
 
-            if (Input.GetKeyDown(KeyCode.Space) && playerRB.velocity.y > -THRESHOLD && playerRB.velocity.y < THRESHOLD)
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(horizontalMove < 0 ? -1.0f : 1.0f, 0.0f, 0.0f));
+
+            //Rotate smoothly to this target:
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
+
+            if (horizontalMove > -THRESHOLD && horizontalMove < THRESHOLD)
             {
+                playerAnim.SetFloat("Speed_f", 0.0f);
+            }
+
+                if (Input.GetKeyDown(KeyCode.Space) && playerRB.velocity.y > -THRESHOLD && playerRB.velocity.y < THRESHOLD)
+            {
+                playerAnim.SetBool("Jump_b", true);
                 isJumping = true;
             }
 
@@ -80,6 +94,7 @@ public class PlayerController : MonoBehaviour
             // Makes the player jump
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isJumping = false;
+            playerAnim.SetBool("Jump_b", false);
 
             // Moves the player horizontally
             if (playerRB.velocity.sqrMagnitude < maxSqrtVelocity)
@@ -89,6 +104,8 @@ public class PlayerController : MonoBehaviour
         {
             if (playerRB.velocity.sqrMagnitude < maxSqrtVelocity)
                 playerRB.AddForce(Vector3.right * horizontalMove * speed);
+
+            playerAnim.SetFloat("Speed_f", 1.0f);
         }
     }
 
