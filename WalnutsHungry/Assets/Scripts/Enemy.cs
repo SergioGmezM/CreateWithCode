@@ -6,14 +6,14 @@ public class Enemy : MonoBehaviour
 {
     private float DISTANCETHRESHOLD = 1.5f;
 
-    public float speed = 8.0f;
+    public float speed = 30.0f;
     public int damage = 10;
     public float rotationSpeed = 5.0f;
 
     private GameManager gameManager;
     private Transform playerTransform;
     private Rigidbody enemyRB;
-    private float maxSqrtVelocity = 4.0f;
+    private float maxSqrtVelocity = 30.0f;
     private float yBounds = 12.0f;
     private float xBounds = 23.0f;
     private bool chasePlayer = true;
